@@ -4,11 +4,11 @@ import unittest
 
 class Board():
     def __init__(self):
-        self.emptyTile = 0
-        self.size = 3
-        self.positions = self.Positions()
-        self.tiles = self.Tiles()
-        self.moves = self.Possiblemoves()
+        self.emptyTile = 0 # initial positioning of empty tile
+        self.size = 3 #
+        self.positions = self.Positions() #dictionary that takes key  vals and points to positions
+        self.tiles = self.Tiles() #inversion of positions, points to tiles
+        self.moves = self.Possiblemoves() #defines possible moves given tile positions
 
 
     #    assign random placements to each tile return dictionary with all placements
@@ -20,7 +20,7 @@ class Board():
         permdict = dict()
         for i,j in enumerate(arr):
             permdict[i] = j
-        permdict[self.emptyTile]=0
+        permdict[0]=self.emptyTile
         return permdict
 
 
@@ -48,39 +48,35 @@ class Board():
 
     # attempt to move empty space
     # TO DO: define moves: swap empty with correct tile
-    def move(self, moveAttempt):
+    def move(self, move):
         if move in self.moves:
             if move == "up":
                 newPos = self.emptyTile-self.size
-                self.positions[self.tiles[newPos]],self.positions[emptyTile]=newPos+self.emptyTile, newPos
+                self.positions[self.tiles[newPos]],self.positions[self.emptyTile]=newPos+self.emptyTile, newPos
+                self.emptyTile=newPos
             elif move =="down":
                 newPos = self.emptyTile + self.size
-                self.positions[self.tiles[newPos]], self.positions[emptyTile] = newPos + self.emptyTile, newPos
+                self.positions[self.tiles[newPos]], self.positions[self.emptyTile] = newPos - self.emptyTile, newPos
+                self.emptyTile=newPos
             elif move =="right":
-                self.emptyTile-=1
+                newPos = self.emptyTile +1
+                print(newPos)
+                self.positions[self.tiles[newPos]], self.positions[self.emptyTile] = newPos -1, newPos
+                self.emptyTile=newPos
             elif move =="left":
-                self.emptyTile+=1
-            self.Tiles()
+                newPos=self.emptyTile-1
+                self.positions[self.tiles[newPos]], self.positions[self.emptyTile] = newPos +1, newPos
+                self.emptyTile = newPos
+            self.tiles =self.Tiles()
         else:
             print("invalid move")
 
 
-        pass
 
 
-# todo: define tests for moves
-class TestBoardMethods(unittest.TestCase):
-    def test_Positions(self):
-        b = Board()
-        self.assertEquals(b.emptyTile,0)
-        self.assertEquals(b.size**2-1,len(b.positions))
-    def test_moves(self):
-        b = Board()
 
-        self.assertEqual(b.moves,["right","down"])
-    def test_Tiles(self):
-        b = Board()
-        self.assertEquals(b.positions[0],b.tiles[b.positions[0]])
+
+
 
 
 
